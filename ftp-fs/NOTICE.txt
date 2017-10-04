@@ -1,0 +1,6 @@
+The ftp-fs is derived from
+
+https://github.com/robtimus/ftp-fs/
+
+Copyright by Rob Spoor
+Licensed under the Apache Software License 2.0
