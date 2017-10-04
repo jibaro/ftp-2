@@ -1,0 +1,5 @@
+rootProject.name = name
+
+include 'ftp-client'
+include 'ftp-fs'
+include 'groovy-ftp'

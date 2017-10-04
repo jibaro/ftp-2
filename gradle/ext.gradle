@@ -1,0 +1,8 @@
+ext {
+    user = 'xbib'
+    projectName = 'ftp-client'
+    projectDescription = 'FTP client'
+    scmUrl = 'https://github.com/xbib/ftp-client'
+    scmConnection = 'scm:git:git://github.com/xbib/ftp-client.git'
+    scmDeveloperConnection = 'scm:git:git://github.com/xbib/ftp-client.git'
+}
