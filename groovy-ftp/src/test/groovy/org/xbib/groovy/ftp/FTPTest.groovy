@@ -17,4 +17,5 @@ class FTPTest {
             log.info "{} {} {}", path, Files.isDirectory(path), Files.getLastModifiedTime(path)
         }
     }
+
 }

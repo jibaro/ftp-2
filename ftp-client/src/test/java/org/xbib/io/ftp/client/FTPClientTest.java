@@ -64,16 +64,6 @@ public class FTPClientTest extends TestCase {
         assertNotSame(entryParserVMS, client.getFileEntryParser()); // the previous entry was replaced
     }
 
-    private static class LocalClient extends FTPClient {
-        private String systemType;
-        @Override
-        public String getSystemType() throws IOException {
-            return systemType;
-        }
-        public void setSystemType(String type) {
-            systemType = type;
-        }
-    }
     public void testParserCachingNullKey() throws Exception {
         LocalClient client = new LocalClient();
         client.setSystemType(FTPClientConfig.SYST_UNIX);
@@ -87,6 +77,7 @@ public class FTPClientTest extends TestCase {
         client.createParser(null);
         assertSame(entryParser, client.getFileEntryParser()); // parser was cached
     }
+
     public void testUnparseableFiles() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write("-rwxr-xr-x   2 root     root         4096 Mar  2 15:13 zxbox".getBytes());
@@ -164,4 +155,15 @@ public class FTPClientTest extends TestCase {
         client._parsePassiveModeReply("227 Entering Passive Mode (172,16,204,138,192,22).");
         assertEquals("4.4.4.4", client.getPassiveHost());
     }
- }
+
+    private static class LocalClient extends FTPClient {
+        private String systemType;
+        @Override
+        public String getSystemType() throws IOException {
+            return systemType;
+        }
+        public void setSystemType(String type) {
+            systemType = type;
+        }
+    }
+}

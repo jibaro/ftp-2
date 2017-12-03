@@ -1,8 +1,6 @@
 package org.xbib.groovy.ftp;
 
 import groovy.lang.Closure;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.nio.file.DirectoryStream;
@@ -13,8 +11,6 @@ import java.util.Map;
 /**
  */
 public class FTP {
-
-    private static final Logger logger = LogManager.getLogger(FTP.class.getName());
 
     private final String url;
 
