@@ -16,14 +16,15 @@ public class ZonedDateTimeParserTest {
 
     @Test
     public void test1() {
+        Year year = Year.now();
         DateTimeFormatter df = new DateTimeFormatterBuilder()
                 .appendPattern("MMM dd HH:mm")
-                .parseDefaulting(ChronoField.YEAR, Year.now().getValue())
+                .parseDefaulting(ChronoField.YEAR, year.getValue())
                 .toFormatter()
                 .withLocale(Locale.US)
                 .withZone(ZoneId.of("UTC"));
         ZonedDateTime zonedDateTime = ZonedDateTime.parse("Oct 01 21:15", df);
-        assertEquals("2017-10-01T21:15Z[UTC]", zonedDateTime.toString());
+        assertEquals(year.getValue() + "-10-01T21:15Z[UTC]", zonedDateTime.toString());
     }
 
     @Test

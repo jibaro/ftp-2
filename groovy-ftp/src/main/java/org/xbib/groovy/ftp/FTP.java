@@ -1,16 +1,24 @@
 package org.xbib.groovy.ftp;
 
-import groovy.lang.Closure;
-
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import groovy.lang.Closure;
 
 /**
  */
 public class FTP {
+
+    private static final Logger logger = Logger.getLogger(FTP.class.getName());
 
     private final String url;
 
@@ -56,6 +64,99 @@ public class FTP {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(ctx.fileSystem.getPath(path), filter)) {
                 stream.forEach(closure::call);
             }
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void upload(Path source, Path target, CopyOption... copyOptions) throws Exception {
+        WithContext<Object> action = ctx -> {
+            try {
+                Path parent = target.getParent();
+                if (!Files.exists(parent)) {
+                    Files.createDirectories(parent);
+                }
+            } catch (FileAlreadyExistsException e) {
+                logger.log(Level.SEVERE, "parent already exists as file: " + target);
+
+            }
+            Files.copy(source, target, copyOptions);
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void upload(Path source, String targetName, CopyOption... copyOptions) throws Exception {
+        WithContext<Object> action = ctx -> {
+            Path target = ctx.fileSystem.getPath(targetName);
+            try {
+                Path parent = target.getParent();
+                if (!Files.exists(parent)) {
+                    Files.createDirectories(parent);
+                }
+            } catch (FileAlreadyExistsException e) {
+                logger.log(Level.SEVERE, "parent already exists as file: " + target);
+            }
+            Files.copy(source, target, copyOptions);
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void upload(InputStream source, String targetName, CopyOption... copyOptions) throws Exception {
+        WithContext<Object> action = ctx -> {
+            Path target = ctx.fileSystem.getPath(targetName);
+            try {
+                Path parent = target.getParent();
+                if (!Files.exists(parent)) {
+                    Files.createDirectories(parent);
+                }
+            } catch (FileAlreadyExistsException e) {
+                logger.log(Level.SEVERE, "parent already exists as file: " + target);
+            }
+            Files.copy(source, target, copyOptions);
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void download(Path source, Path target, CopyOption... copyOptions) throws Exception {
+        WithContext<Object> action = ctx -> {
+            Files.copy(source, target, copyOptions);
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void download(String source, Path target, CopyOption... copyOptions) throws Exception {
+        WithContext<Object> action = ctx -> {
+            try {
+                Path parent = target.getParent();
+                if (parent != null) {
+                    if (!Files.exists(parent)) {
+                        Files.createDirectories(parent);
+                    }
+                }
+            } catch (FileAlreadyExistsException e) {
+                logger.log(Level.SEVERE, "parent already exists as file: " + target);
+            }
+            Files.copy(ctx.fileSystem.getPath(source), target, copyOptions);
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void download(String source, OutputStream target) throws Exception {
+        WithContext<Object> action = ctx -> {
+            Files.copy(ctx.fileSystem.getPath(source), target);
+            return null;
+        };
+        performWithContext(action);
+    }
+
+    public void remove(String source) throws Exception {
+        WithContext<Object> action = ctx -> {
+            Files.deleteIfExists(ctx.fileSystem.getPath(source));
             return null;
         };
         performWithContext(action);

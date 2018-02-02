@@ -369,7 +369,7 @@ public class FTPClient extends FTP implements Configurable {
     /**
      * Controls the automatic server encoding detection (only UTF-8 supported).
      */
-    private boolean __autodetectEncoding = false;
+    private boolean __autodetectEncoding = true;
 
     /**
      * Map of FEAT responses. If null, has not been initialised.
@@ -2375,11 +2375,11 @@ public class FTPClient extends FTP implements Configurable {
     }
 
     /**
-     * Creates a new subdirectory on the FTP server in the current directory
+     * Creates new subdirectories on the FTP server in the current directory
      * (if a relative pathname is given) or where specified (if an absolute
      * pathname is given).
      *
-     * @param pathname The pathname of the directory to create.
+     * @param path The pathname of the directory to create.
      * @return True if successfully completed, false if not.
      * @throws ConnectionClosedException If the FTP server prematurely closes the connection as a result
      *                                      of the client being idle or some other reason causing the server
@@ -2388,8 +2388,8 @@ public class FTPClient extends FTP implements Configurable {
      * @throws IOException                  If an I/O error occurs while either sending a
      *                                      command to the server or receiving a reply from the server.
      */
-    public boolean makeDirectory(String pathname) throws IOException {
-        return FTPReply.isPositiveCompletion(mkd(pathname));
+    public boolean makeDirectory(String path) throws IOException {
+        return FTPReply.isPositiveCompletion(mkd(path));
     }
 
     /**

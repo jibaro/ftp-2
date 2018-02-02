@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemException;
 import java.nio.file.OpenOption;
 import java.util.Collection;
@@ -272,7 +273,7 @@ public abstract class AbstractFTPFileSystemTest {
         }
 
         @Override
-        public FileSystemException createCreateDirectoryException(String directory, int replyCode, String replyString) {
+        public FileAlreadyExistsException createCreateDirectoryException(String directory, int replyCode, String replyString) {
             return delegate.createCreateDirectoryException(directory, replyCode, replyString);
         }
 

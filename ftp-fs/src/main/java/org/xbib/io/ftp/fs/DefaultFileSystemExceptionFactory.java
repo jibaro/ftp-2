@@ -1,5 +1,6 @@
 package org.xbib.io.ftp.fs;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.OpenOption;
@@ -24,8 +25,8 @@ public class DefaultFileSystemExceptionFactory implements FileSystemExceptionFac
     }
 
     @Override
-    public FileSystemException createCreateDirectoryException(String directory, int replyCode, String replyString) {
-        return new FTPFileSystemException(directory, replyCode, replyString);
+    public FileAlreadyExistsException createCreateDirectoryException(String directory, int replyCode, String replyString) {
+        return new FileAlreadyExistsException(directory);
     }
 
     @Override

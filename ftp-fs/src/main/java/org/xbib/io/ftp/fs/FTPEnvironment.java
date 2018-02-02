@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A utility class to set up environments that can be used in the {@link FileSystemProvider#newFileSystem(URI, Map)}
@@ -72,6 +74,7 @@ public class FTPEnvironment implements Map<String, Object>, Cloneable {
     private static final String ACTIVE_PORT_RANGE_MIN = "activePortRange.min";
     private static final String ACTIVE_PORT_RANGE_MAX = "activePortRange.max";
     private static final String ACTIVE_EXTERNAL_IP_ADDRESS = "activeExternalIPAddress";
+    private static final String PASSIVE = "passive";
     private static final String PASSIVE_LOCAL_IP_ADDRESS = "passiveLocalIPAddress";
     private static final String REPORT_ACTIVE_EXTERNAL_IP_ADDRESS = "reportActiveExternalIPAddress";
     private static final String BUFFER_SIZE = "bufferSize";
@@ -87,7 +90,7 @@ public class FTPEnvironment implements Map<String, Object>, Cloneable {
 
     // FTP file system support
 
-    private static final int DEFAULT_CLIENT_CONNECTION_COUNT = 5;
+    private static final int DEFAULT_CLIENT_CONNECTION_COUNT = 1;
     private static final String CLIENT_CONNECTION_COUNT = "clientConnectionCount";
     private static final String FILE_SYSTEM_EXCEPTION_FACTORY = "fileSystemExceptionFactory";
     private static final String CALCULATE_ACTUAL_TOTAL_SPACE = "calculateActualTotalSpace";
@@ -767,6 +770,10 @@ public class FTPEnvironment implements Map<String, Object>, Cloneable {
             boolean on = FileSystemProviderSupport.getBooleanValue(this, SO_LINGER_ON);
             int val = FileSystemProviderSupport.getIntValue(this, SO_LINGER_VALUE);
             client.setSoLinger(on, val);
+        }
+
+        if (containsKey(PASSIVE)) {
+            client.enterRemotePassiveMode();
         }
 
         // default to binary

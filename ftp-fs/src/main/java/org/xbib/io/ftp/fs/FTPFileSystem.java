@@ -308,7 +308,6 @@ class FTPFileSystem extends FileSystem {
         if (attrs.length > 0) {
             throw Messages.fileSystemProvider().unsupportedCreateFileAttribute(attrs[0].name());
         }
-
         try (FTPClientPool.Client client = clientPool.get()) {
             client.mkdir(path.path());
         }

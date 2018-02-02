@@ -1,6 +1,7 @@
 package org.xbib.io.ftp.fs;
 
 import java.nio.file.AccessDeniedException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.OpenOption;
@@ -48,7 +49,7 @@ public interface FileSystemExceptionFactory {
      * @param replyString The entire text from the last FTP response that triggered this method call.
      * @return The created {@code FileSystemException}.
      */
-    FileSystemException createCreateDirectoryException(String directory, int replyCode, String replyString);
+    FileAlreadyExistsException createCreateDirectoryException(String directory, int replyCode, String replyString);
 
     /**
      * Creates a {@code FileSystemException} that indicates a file or directory cannot be deleted.

@@ -541,8 +541,6 @@ public class FTPFileSystemTest extends AbstractFTPFileSystemTest {
         }
     }
 
-    // FTPFileSystem.newDirectoryStream
-
     @Test
     public void testNewDirectoryStream() throws IOException {
 
@@ -575,15 +573,11 @@ public class FTPFileSystemTest extends AbstractFTPFileSystemTest {
         assertThat(entry, instanceOf(DirectoryEntry.class));
     }
 
-    // FTPFileSystem.createNewDirectory
-
-    @Test(expected = FTPFileSystemException.class)
+    @Test(expected = FileAlreadyExistsException.class)
     public void testCreateDirectoryFTPFailure() throws IOException {
         DirectoryEntry root = getDirectory("/");
         root.setPermissionsFromString("r-xr-xr-x");
-
         // failure: read-only parent
-
         try {
             getFileSystem().createDirectory(createPath("/foo"));
         } finally {
@@ -601,8 +595,6 @@ public class FTPFileSystemTest extends AbstractFTPFileSystemTest {
             verify(getExceptionFactory(), never()).createDeleteException(anyString(), anyInt(), anyString(), anyBoolean());
         }
     }
-
-    // FTPFileSystem.delete
 
     @Test(expected = FTPFileSystemException.class)
     public void testDeleteRoot() throws IOException {
